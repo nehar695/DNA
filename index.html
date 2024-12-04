@@ -3,136 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DNA Strand Builder</title>
-  <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script> <!-- Ethers.js -->
+  <title>PortSol</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+    body, html {
       margin: 0;
-      background: url('https://i.ibb.co/LZQdHrT/lab-backround.jpg') no-repeat center center fixed;
-      background-size: cover;
-      overflow: hidden;
-    }
-
-    .dna-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 10px;
-      position: relative;
-      overflow-y: auto;
-      height: 80vh;
-      width: 200px;
-    }
-
-    .dna-pair {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      width: 100%;
-      height: 20px;
-    }
-
-    .dna-base {
-      width: 40px;
-      height: 20px;
-      border-radius: 5px;
-    }
-
-    .dna-base:nth-child(1) {
-      background-color: #5e81ac;
-    }
-
-    .dna-base:nth-child(2) {
-      background-color: #bf616a;
-    }
-
-    .dna-backbone {
-      position: absolute;
-      width: 10px;
+      padding: 0;
       height: 100%;
-      background-color: #d08770;
-      border-radius: 5px;
+      overflow: hidden;
+      background-color: #111;
     }
 
-    .dna-backbone.left {
-      left: 0;
+    .portal {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 48px;
+      font-family: 'Arial', sans-serif;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      z-index: 10;
     }
 
-    .dna-backbone.right {
-      right: 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="dna-container" id="dnaContainer">
-    <!-- DNA strand grows here -->
-  </div>
-
-  <script>
-    const CA = "0xYourContractAddress"; // Replace with your contract address
-    const provider = new ethers.providers.WebSocketProvider("wss://mainnet.infura.io/ws/v3/YOUR_INFURA_PROJECT_ID"); // Replace with your provider
-    const contractABI = [
-      // Add the ABI of the contract here
-    ];
-    const contract = new ethers.Contract(CA, contractABI, provider);
-
-    const dnaContainer = document.getElementById('dnaContainer');
-    let marketCap = 0; // Replace with initial market cap if needed
-    const maxMarketCap = 1_000_000;
-    const maxDNA = 100;
-
-    // Function to calculate DNA growth
-    function calculateDNAGrowth() {
-      const dnaPairs = Math.floor((marketCap / maxMarketCap) * maxDNA);
-      updateDNA(dnaPairs);
+    .portal-top {
+      top: 0;
+      font-size: 24px;
     }
 
-    // Function to update the DNA strand
-    function updateDNA(dnaPairs) {
-      dnaContainer.innerHTML = ''; // Clear the DNA container
-      for (let i = 0; i < dnaPairs; i++) {
-        const dnaPair = document.createElement('div');
-        dnaPair.className = 'dna-pair';
+    .portal-bottom {
+      bottom: 0;
+      font-size: 24px;
+    }
 
-        const leftBackbone = document.createElement('div');
-        leftBackbone.className = 'dna-backbone left';
+    .falling-image {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: fall 20s infinite linear;
+    }
 
-        const rightBackbone = document.createElement('div');
-        rightBackbone.className = 'dna-backbone right';
-
-        const base1 = document.createElement('div');
-        base1.className = 'dna-base';
-
-        const base2 = document.createElement('div');
-        base2.className = 'dna-base';
-
-        dnaPair.appendChild(leftBackbone);
-        dnaPair.appendChild(base1);
-        dnaPair.appendChild(base2);
-        dnaPair.appendChild(rightBackbone);
-
-        dnaContainer.appendChild(dnaPair);
+    @keyframes fall {
+      0% {
+        top: -100px;
+      }
+      100% {
+        top: 100vh;
       }
     }
 
-    // Listen for "buy" events from the blockchain
-    contract.on("BuyEvent", async (buyer, amount) => {
-      console.log(`Buy detected: ${buyer} bought ${amount}`);
-      // Fetch updated market cap here (replace with your logic)
-      marketCap += amount; // Replace with actual calculation
-      calculateDNAGrowth();
-    });
+    .falling-image.slow {
+      animation-duration: 30s;
+    }
 
-    // Initialize the DNA strand
-    calculateDNAGrowth();
+    .falling-image.faster {
+      animation-duration: 10s;
+    }
+
+    .falling-image.faster-fast {
+      animation-duration: 5s;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="portal portal-top">Portal Opened: Welcome to PortSol</div>
+  <div class="portal portal-bottom">Portal Closed: The Journey Awaits</div>
+
+  <img src="https://i.ibb.co/FYQNYky/solana-logo-no-back-Photoroom.png" class="falling-image" id="fallingImage">
+
+  <script>
+    let image = document.getElementById('fallingImage');
+    let speed = 20; // Starting speed for falling
+
+    setInterval(() => {
+      // Increasing speed as time progresses
+      if (speed > 5) {
+        speed -= 2;
+        image.style.animationDuration = `${speed}s`;
+      }
+    }, 3000); // Speed up every 3 seconds
+
+    // Initial slow animation
+    image.classList.add('slow');
+
+    // Optional: You can dynamically change the speed here based on a condition or interval
+    setTimeout(() => {
+      image.classList.remove('slow');
+      image.classList.add('faster');
+    }, 5000); // After 5 seconds, speed up the fall
+
+    setTimeout(() => {
+      image.classList.remove('faster');
+      image.classList.add('faster-fast');
+    }, 15000); // After 15 seconds, make the fall even faster
   </script>
+
 </body>
 </html>
