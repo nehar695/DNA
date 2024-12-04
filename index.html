@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNA Strand</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    .dna-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .dna-pair {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 200px;
+      height: 20px;
+      border-radius: 10px;
+      background-color: #ddd;
+      position: relative;
+      animation: twist 1s linear infinite;
+    }
+
+    .dna-base {
+      width: 50px;
+      height: 20px;
+      background-color: #5e81ac;
+      border-radius: 10px;
+    }
+
+    .dna-base:nth-child(2) {
+      background-color: #bf616a;
+    }
+
+    @keyframes twist {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #81a1c1;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #5e81ac;
+    }
+  </style>
+</head>
+<body>
+  <div class="dna-container">
+    <!-- DNA pairs will be dynamically added here -->
+  </div>
+  <button id="add-pair">Simulate Purchase</button>
+
+  <script>
+    const dnaContainer = document.querySelector('.dna-container');
+    const addPairButton = document.getElementById('add-pair');
+
+    // Function to add a new DNA pair
+    function addDNAPair() {
+      const dnaPair = document.createElement('div');
+      dnaPair.className = 'dna-pair';
+
+      const base1 = document.createElement('div');
+      base1.className = 'dna-base';
+      
+      const base2 = document.createElement('div');
+      base2.className = 'dna-base';
+
+      dnaPair.appendChild(base1);
+      dnaPair.appendChild(base2);
+
+      dnaContainer.appendChild(dnaPair);
+    }
+
+    // Event listener for the button
+    addPairButton.addEventListener('click', addDNAPair);
+  </script>
+</body>
+</html>
