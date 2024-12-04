@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DNA Strand Builder</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.umd.min.js"></script> <!-- Ethers.js -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,6 +16,7 @@
       margin: 0;
       background: url('https://i.ibb.co/LZQdHrT/lab-backround.jpg') no-repeat center center fixed;
       background-size: cover;
+      overflow: hidden;
     }
 
     .dna-container {
@@ -24,8 +26,7 @@
       justify-content: flex-start;
       gap: 10px;
       position: relative;
-      overflow: hidden;
-      padding: 20px;
+      overflow-y: auto;
       height: 80vh;
       width: 200px;
     }
@@ -68,66 +69,70 @@
     .dna-backbone.right {
       right: 0;
     }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #81a1c1;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #5e81ac;
-    }
   </style>
 </head>
 <body>
-  <div class="dna-container">
-    <!-- DNA strand will grow here -->
+  <div class="dna-container" id="dnaContainer">
+    <!-- DNA strand grows here -->
   </div>
-  <button id="add-pair">Simulate Purchase</button>
 
   <script>
-    const dnaContainer = document.querySelector('.dna-container');
-    const addPairButton = document.getElementById('add-pair');
+    const CA = "0xYourContractAddress"; // Replace with your contract address
+    const provider = new ethers.providers.WebSocketProvider("wss://mainnet.infura.io/ws/v3/YOUR_INFURA_PROJECT_ID"); // Replace with your provider
+    const contractABI = [
+      // Add the ABI of the contract here
+    ];
+    const contract = new ethers.Contract(CA, contractABI, provider);
 
-    // Function to add a new DNA pair
-    function addDNAPair() {
-      const dnaPair = document.createElement('div');
-      dnaPair.className = 'dna-pair';
+    const dnaContainer = document.getElementById('dnaContainer');
+    let marketCap = 0; // Replace with initial market cap if needed
+    const maxMarketCap = 1_000_000;
+    const maxDNA = 100;
 
-      // Create left and right backbones
-      const leftBackbone = document.createElement('div');
-      leftBackbone.className = 'dna-backbone left';
-
-      const rightBackbone = document.createElement('div');
-      rightBackbone.className = 'dna-backbone right';
-
-      // Create the base pair
-      const base1 = document.createElement('div');
-      base1.className = 'dna-base';
-
-      const base2 = document.createElement('div');
-      base2.className = 'dna-base';
-
-      // Append elements together
-      dnaPair.appendChild(leftBackbone);
-      dnaPair.appendChild(base1);
-      dnaPair.appendChild(base2);
-      dnaPair.appendChild(rightBackbone);
-
-      dnaContainer.appendChild(dnaPair);
-
-      // Add a slight rotation for visual effect
-      dnaPair.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+    // Function to calculate DNA growth
+    function calculateDNAGrowth() {
+      const dnaPairs = Math.floor((marketCap / maxMarketCap) * maxDNA);
+      updateDNA(dnaPairs);
     }
 
-    // Event listener for the button
-    addPairButton.addEventListener('click', addDNAPair);
+    // Function to update the DNA strand
+    function updateDNA(dnaPairs) {
+      dnaContainer.innerHTML = ''; // Clear the DNA container
+      for (let i = 0; i < dnaPairs; i++) {
+        const dnaPair = document.createElement('div');
+        dnaPair.className = 'dna-pair';
+
+        const leftBackbone = document.createElement('div');
+        leftBackbone.className = 'dna-backbone left';
+
+        const rightBackbone = document.createElement('div');
+        rightBackbone.className = 'dna-backbone right';
+
+        const base1 = document.createElement('div');
+        base1.className = 'dna-base';
+
+        const base2 = document.createElement('div');
+        base2.className = 'dna-base';
+
+        dnaPair.appendChild(leftBackbone);
+        dnaPair.appendChild(base1);
+        dnaPair.appendChild(base2);
+        dnaPair.appendChild(rightBackbone);
+
+        dnaContainer.appendChild(dnaPair);
+      }
+    }
+
+    // Listen for "buy" events from the blockchain
+    contract.on("BuyEvent", async (buyer, amount) => {
+      console.log(`Buy detected: ${buyer} bought ${amount}`);
+      // Fetch updated market cap here (replace with your logic)
+      marketCap += amount; // Replace with actual calculation
+      calculateDNAGrowth();
+    });
+
+    // Initialize the DNA strand
+    calculateDNAGrowth();
   </script>
 </body>
 </html>
