@@ -11,17 +11,18 @@
       height: 100%;
       overflow: hidden;
       background-color: #111;
+      color: white;
     }
 
+    /* Portal styles */
     .portal {
       position: absolute;
       width: 100%;
-      height: 100%;
+      height: 100px;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: white;
-      font-size: 48px;
+      font-size: 24px;
       font-family: 'Arial', sans-serif;
       text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
       z-index: 10;
@@ -29,20 +30,36 @@
 
     .portal-top {
       top: 0;
-      font-size: 24px;
+      border-bottom: 2px solid #0ff;
+      background: rgba(0, 255, 255, 0.2);
     }
 
     .portal-bottom {
       bottom: 0;
-      font-size: 24px;
+      border-top: 2px solid #0ff;
+      background: rgba(0, 255, 255, 0.2);
     }
 
+    /* CA Section */
+    .ca-section {
+      position: absolute;
+      bottom: 120px; /* Adjusting space from the bottom portal */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      font-family: 'Arial', sans-serif;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      z-index: 5;
+    }
+
+    /* Falling image styles */
     .falling-image {
       position: absolute;
-      top: 0;
+      top: -100px;
       left: 50%;
       transform: translateX(-50%);
       animation: fall 20s infinite linear;
+      z-index: 1;
     }
 
     @keyframes fall {
@@ -70,10 +87,17 @@
 </head>
 <body>
 
+  <!-- Top Portal -->
   <div class="portal portal-top">Portal Opened: Welcome to PortSol</div>
-  <div class="portal portal-bottom">Portal Closed: The Journey Awaits</div>
 
+  <!-- CA Section -->
+  <div class="ca-section">CA:</div>
+
+  <!-- Falling Image -->
   <img src="https://i.ibb.co/FYQNYky/solana-logo-no-back-Photoroom.png" class="falling-image" id="fallingImage">
+
+  <!-- Bottom Portal -->
+  <div class="portal portal-bottom">Portal Closed: The Journey Awaits</div>
 
   <script>
     let image = document.getElementById('fallingImage');
