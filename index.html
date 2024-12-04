@@ -3,128 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PortSol</title>
+  <title>Funny Meth Santa Memecoin</title>
   <style>
-    body, html {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background-color: #111;
-      color: white;
+      box-sizing: border-box;
     }
 
-    /* Portal styles */
-    .portal {
-      position: absolute;
+    body {
       width: 100%;
-      height: 100px;
+      height: 100vh;
+      overflow: hidden;
+      background-image: url('https://i.ibb.co/7XSv76Z/christmas-back.webp');
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 24px;
-      font-family: 'Arial', sans-serif;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-      z-index: 10;
+      position: relative;
     }
 
-    .portal-top {
-      top: 0;
-      border-bottom: 2px solid #0ff;
-      background: rgba(0, 255, 255, 0.2);
-    }
-
-    .portal-bottom {
-      bottom: 0;
-      border-top: 2px solid #0ff;
-      background: rgba(0, 255, 255, 0.2);
-    }
-
-    /* CA Section */
-    .ca-section {
+    .main-image {
       position: absolute;
-      bottom: 120px; /* Adjusting space from the bottom portal */
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      font-size: 24px;
-      font-family: 'Arial', sans-serif;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-      z-index: 5;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: auto;
     }
 
-    /* Falling image styles */
-    .falling-image {
+    .falling {
       position: absolute;
-      top: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: fall 20s infinite linear;
-      z-index: 1;
+      top: -50px;
+      width: 100px;
+      height: auto;
+      animation: fall 4s linear infinite;
+    }
+
+    .falling:nth-child(1) {
+      left: 20%;
+      animation-duration: 4s;
+    }
+
+    .falling:nth-child(2) {
+      left: 60%;
+      animation-duration: 5s;
     }
 
     @keyframes fall {
       0% {
-        top: -100px;
+        top: -50px;
       }
       100% {
         top: 100vh;
       }
     }
-
-    .falling-image.slow {
-      animation-duration: 30s;
-    }
-
-    .falling-image.faster {
-      animation-duration: 10s;
-    }
-
-    .falling-image.faster-fast {
-      animation-duration: 5s;
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Top Portal -->
-  <div class="portal portal-top">Portal Opened: Welcome to PortSol</div>
-
-  <!-- CA Section -->
-  <div class="ca-section">CA:</div>
-
-  <!-- Falling Image -->
-  <img src="https://i.ibb.co/FYQNYky/solana-logo-no-back-Photoroom.png" class="falling-image" id="fallingImage">
-
-  <!-- Bottom Portal -->
-  <div class="portal portal-bottom">Portal Closed: The Journey Awaits</div>
-
-  <script>
-    let image = document.getElementById('fallingImage');
-    let speed = 20; // Starting speed for falling
-
-    setInterval(() => {
-      // Increasing speed as time progresses
-      if (speed > 5) {
-        speed -= 2;
-        image.style.animationDuration = `${speed}s`;
-      }
-    }, 3000); // Speed up every 3 seconds
-
-    // Initial slow animation
-    image.classList.add('slow');
-
-    // Optional: You can dynamically change the speed here based on a condition or interval
-    setTimeout(() => {
-      image.classList.remove('slow');
-      image.classList.add('faster');
-    }, 5000); // After 5 seconds, speed up the fall
-
-    setTimeout(() => {
-      image.classList.remove('faster');
-      image.classList.add('faster-fast');
-    }, 15000); // After 15 seconds, make the fall even faster
-  </script>
+  <img src="https://i.ibb.co/YWd8WqT/Santa-Kentucky-rev-400x400.jpg" alt="Santa" class="main-image">
+  
+  <img src="https://i.ibb.co/pr5bdvB/green-no-backround-Photoroom.png" alt="Falling Green" class="falling">
+  <img src="https://i.ibb.co/NyNHLkd/blue-no-back-Photoroom.png" alt="Falling Blue" class="falling">
 
 </body>
 </html>
